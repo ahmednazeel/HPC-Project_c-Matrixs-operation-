@@ -10,6 +10,43 @@ this project is the **first Stage** of the roadmap toward building robust, hight
 -Core operations with dimension checks 
 -Easy To extend with new operation (subTraction, determinant, inverse)
 ---
+---
+## Stages
+
+### Stage 1 (completed)
+- Implemented core matrix operations:
+    - Addition
+    - Multiplication
+    - Transpose
+- Verified correctness with demo example in the `main.cpp`.
+
+### Stage 2 (completed)
+- Added advanced matrix operations: 
+    - Determinant (recursive expansion using minors and coFactors)
+    - Inverse (build form coFactor matrix and determinant)
+    - Identity matrix (neutral element in multiplication)
+- Integrated these functions into Matrix class 
+- Updated `main.cpp` with demo examples:
+    - Determinant of 2*2  and 3*3 matrixes
+    - Inverse of a 2*2 matrix
+    -Identity matrix generation
+- Tagged release: **v2.0-advanced**
+---
+
+---
+## Next Stage (planned)
+### Stage 3 - Benchmarking
+- Measure performance of operations (multiplication, determinant, inverse) using `<chrono>`.
+- Test with larger matrices (e.g., 100×100).
+- Document execution times and compare efficiency.
+- Prepare for optimization in Stage 4.
+---
+
+## Notes
+- Code is structured with clear separation (`Matrix.h`, `Matrix.cpp`, `main.cpp`).
+- Documentation and versioning are updated at each stage.
+- MIT License included for open-source use.
+
 
 ## Project Structure
 Matrix-Multiplication/
@@ -18,3 +55,4 @@ Matrix-Multiplication/
 │── main.cpp
 │── projectDocument.md
 │── LICENSE
+

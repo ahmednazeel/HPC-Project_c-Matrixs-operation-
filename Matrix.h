@@ -27,10 +27,16 @@ class Matrix {
         Matrix transpose() const;
         // multiply 2 matrixes
         static Matrix multiply ( const Matrix& A,const Matrix& B);
-        
+        // Stage 2 methods
+        Matrix minorMatrix(int row, int col) const;
+        Matrix coFactorMatrix() const;
+        double determinant() const;
+        Matrix inverse() const;
+        static Matrix identity(int n);
+
     private:
         int rows{0}, cols{0};
-        vector<vector<int>> data;
+        vector<vector<double>> data;
 };
 
 #endif

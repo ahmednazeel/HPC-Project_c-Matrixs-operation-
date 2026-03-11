@@ -4,7 +4,7 @@ using namespace std;
 // constructors to getting the data from the client 
 Matrix::Matrix(int r, int c) : rows{r}, cols{c} 
 {
-    data.resize(rows,vector<int>(cols,0));
+    data.resize(rows,vector<double>(cols,0));
 }
 
 // Getters (Accessors) --------------------------------------------------------
@@ -72,4 +72,84 @@ Matrix Matrix::transpose() const {
         for(int j = 0; j < cols; j++) result.set(j,i,this -> get(i,j));
     }
     return result;
+}
+
+
+//  Helper Function ---------------------------------------------------------
+
+// # Minor Matrix
+Matrix Matrix::minorMatrix(int row, int col) const {
+    Matrix result(rows-1, cols-1); 
+
+    int r = 0; 
+    for(size_t i =0; i < rows; i++) {
+        if (i == row) continue;
+        
+        int c =0; 
+        for (size_t j = 0; j < cols; j++)
+        {
+            if (j == col) continue;
+            result.data[r][c] = data[i][j];
+            c++;
+        }
+        r++;    
+    }
+    return result;
+}
+// # CoFactorMatrix Matrix
+Matrix Matrix::coFactorMatrix() const {
+    if(rows != cols) throw std::invalid_argument("Matrix must be square");
+    
+    Matrix cof(rows, cols);
+    
+    for(int i =0; i<rows; i++){
+        for(int j = 0; j< cols; j++){
+            Matrix minor = minorMatrix(i,j);
+            double sign = ((i + j) % 2 ==0) ? 1 : -1;
+            cof.data[i][j] = sign * minor.determinant();
+        }
+    }
+    
+    return cof;
+}
+
+//  Determinant (recursive)
+double Matrix::determinant() const {
+    
+    if (rows != cols) throw std::invalid_argument("Matrix must be square");
+    
+    int n = rows;
+    if (n == 1) return data[0][0];
+    if (n == 2) return data[0][0] * data[1][1] - data[0][1] * data[1][0];
+
+    double det = 0;
+    for (int col = 0; col < n; col++) {
+        Matrix minor = minorMatrix(0, col);
+        det += (col % 2 == 0 ? 1 : -1) * data[0][col] * minor.determinant();
+    }
+    return det;
+}
+
+Matrix Matrix::inverse() const {
+    double det = determinant();
+    if (det == 0) throw std::runtime_error("Matrix is singular");
+
+    Matrix cof = coFactorMatrix();
+    Matrix adj = cof.transpose();
+    Matrix inv(rows, cols);
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            inv.data[i][j] = adj.data[i][j] / det;
+        }
+    }
+    return inv;
+}
+
+Matrix Matrix::identity(int n) {
+    Matrix I(n, n);
+    for (int i = 0; i < n; i++) {
+        I.data[i][i] = 1;
+    }
+    return I;
 }
